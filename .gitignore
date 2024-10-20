@@ -1,1 +1,8 @@
-venv/ 
+# Ignore the virtual environment
+venv/
+
+# Ignore Python cache files
+__pycache__/
+
+# Ignore environment variable and credentials
+*.json
