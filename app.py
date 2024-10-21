@@ -4,6 +4,7 @@ from moviepy.editor import VideoFileClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from google.oauth2 import service_account
 from google.cloud import speech_v1
+import json
 import subprocess
 import requests
 from google.cloud import speech, texttospeech
