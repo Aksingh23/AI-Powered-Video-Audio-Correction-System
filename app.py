@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 from moviepy.editor import VideoFileClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
@@ -8,9 +9,38 @@ import openai
 import numpy as np
 import soundfile as sf
 
-# Azure OpenAI connection details
-azure_openai_key = "22ec84421ec24230a3638d1b51e3a7dc" 
-azure_openai_endpoint = "https://internshala.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-08-01-preview" 
+# # Azure OpenAI connection details
+# azure_openai_key = "22ec84421ec24230a3638d1b51e3a7dc" 
+# azure_openai_endpoint = "https://internshala.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-08-01-preview" 
+
+# Access the Azure OpenAI API key
+azure_openai_key = st.secrets["AZURE_OPENAI_KEY"]
+
+# Access the Azure OpenAI endpoint URL
+azure_openai_endpoint = st.secrets["AZURE_OPENAI_ENDPOINT"]
+
+# Access the Google credentials (if you store the full JSON content)
+google_credentials = st.secrets["GOOGLE_APPLICATION_CREDENTIALS"]
+
+# Function to call Azure OpenAI API
+def call_azure_openai(prompt):
+    headers = {
+        "Content-Type": "application/json",
+        "api-key": azure_openai_key
+    }
+
+    data = {
+        "messages": [{"role": "user", "content": prompt}],
+        "max_tokens": 1000
+    }
+
+    response = requests.post(azure_openai_endpoint, headers=headers, json=data)
+
+    if response.status_code == 200:
+        result = response.json()
+        return result
+    else:
+        return f"Error: {response.status_code}"
 
 def main():
     st.title("AI-Powered Video Audio Replacement")
