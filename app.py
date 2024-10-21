@@ -2,6 +2,8 @@ import os
 import streamlit as st
 from moviepy.editor import VideoFileClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
+from google.oauth2 import service_account
+from google.cloud import speech_v1
 import subprocess
 import requests
 from google.cloud import speech, texttospeech
@@ -21,6 +23,15 @@ azure_openai_endpoint = st.secrets["AZURE_OPENAI_ENDPOINT"]
 
 # Access the Google credentials (if you store the full JSON content)
 google_credentials = st.secrets["GOOGLE_APPLICATION_CREDENTIALS"]
+
+# Parse the JSON content into a Python dictionary
+google_credentials = json.loads(google_credentials_json)
+
+# Create a credentials object using the parsed JSON
+credentials = service_account.Credentials.from_service_account_info(google_credentials)
+
+# Now you can initialize the Google Cloud client with the credentials
+client = speech_v1.SpeechClient(credentials=credentials)
 
 # Function to call Azure OpenAI API
 def call_azure_openai(prompt):
