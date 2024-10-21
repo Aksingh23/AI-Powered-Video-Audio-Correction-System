@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "stalwart-kite-439005-q2",
+  "private_key_id": "5e69689fbb873cf14aee0d0cbc721f537dbdcccd",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCppPzPMklA0OjT\n8mQPRl+OyHDrG0Y4wzRM/4vvyLsEk9OGFC9pOiA1TG0SvNQLxrah/FXjsmMqgt+H\ni5YkqBEQlmkCc2m28ZNma/kWwF/npOlSqZO2+dWzZdjsjOL8QR3xk0MxJk7LLxb7\nEQ5/tBmsVMUUVmherOBJcH4VwhiDP6Ke46VivU1nwvzAvE6WU1CPQBX+JHg4nwyD\n1WtQZw6LOPjiHANEIzzbYNPQXe1m4J4vydLryijrepqGPPu9fxM5pbu83LJK8wln\nEwACAvBjWZFomDHLCnQ8oqQ2FU/Wfd7BQBCp9z4E0+mXsETuJKji0h/ZuQdC+lZc\npfACW2HlAgMBAAECggEADZh5o1BUIxPrCOtk3f2FlH+XXxw3Nz7bru0PBbdIV7BS\nNC1jdFMyeBsJJcaI1u3EvrwmlQI7pNFKwUXsUUE/5tyrC0V9HCqFpeBy3MIrnXiv\ns06AVlp06DT6GtEast00HWNwL9zyVSHPvWzLROxF33QGvF/Fawr/SZtwm2VMCh6a\nzAnaWT19yPAp9QHUqkKcNMrTHtmTq0oU9wDNzljgj4bJ9qiq8xHoU39uNTHC9vuj\niDzKJB2s6KRSfjOhCb0lFDbCp8eiVTesCI/ZscKTC9V5iq1jcILRpzdgEQJZblbq\nXuUg3awIo/jHEAE6Exm+Ijc3LANJlH4wDzXO7nX2AQKBgQDVWxz2OGeW/u2P5Gaq\nHKqAffhVzGzOCSVMHXnXHafihfsNMFK+0hfxsnkR0ziX+1N/IR0hSfQjybiyP6G1\nci/xdpzGzZfgctPhCHtT+TuxpxgYi/6p5lZRvbTwY62ICUyC5onoaJJMWw91N96E\ng4EH/20JgMbQvkfbaw2PsnnGAQKBgQDLjUUvU0j6TAe+RjK8SwA4H0R3CaFp4NHZ\nyi2slfM+eUC5SWBlUmfuUzAUVKltHualSK9ha9cEnebYsJBFlOlL4YfDTVloRCfr\nOYS2IWdeZaqTdGgzAOyeGe+NkNpTJJSrqjCeVx0C6s3ZBd2qOTNH/JbSH446eiG3\nhYfYmptD5QKBgQDVHJuDPbgLVTyJ/ESoKtYMXseNPBJ6gxwkOVUYkGC/ncC03c3p\nGQYdwH26VlczSDGQzMzCEZKxpK6+LV0jVpmZATd8RKQt58TIBKbbrBn6S8N/0WZg\n4tjZ8Too3Afb2B36qriZ0so/Rr3cAiBcENbz3ClX0q/ElixEeVwkasvEAQKBgQCl\nGDDMIK3pLO9+2WrfI6nK2zlpnysHOCyci4oeGAURX8EqRyRjKcJYH6q4Yq6EbfK+\njkSJLLFZ8kRA7nwlo5DRVdwKgNsKYXVLKPzFyDQR8T23mUvGSnKgDQMp/BnII7xd\nu4zxcFB8hDtvUX2nSfuY4HrndGakcViVhD1ZZpSWLQKBgHJUH3a9/i+LeVeitc8O\nfhAs4czX27d7INMbD7rvPdWcmOjXs3SSqXQuwjSP5Xa0BQOMaFwz5xIvxiAArnTN\nrOtFP7q67Bzo1mlBGPJJh8vtlpyJ+hXCRt1lqaPw/4n1f0Fn1RGMfemH7LFbJiLA\nEdr3HVjWwiJ8kE/twYD8Pw+b\n-----END PRIVATE KEY-----\n",
+  "client_email": "ai-video-poc@stalwart-kite-439005-q2.iam.gserviceaccount.com",
+  "client_id": "102707692873404159730",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/ai-video-poc%40stalwart-kite-439005-q2.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
