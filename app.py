@@ -1,8 +1,12 @@
 import streamlit as st
+from moviepy.editor import VideoFileClip
+from moviepy.audio.io.AudioFileClip import AudioFileClip
 import subprocess
 import requests
 from google.cloud import speech, texttospeech
 import openai
+import numpy as np
+import soundfile as sf
 
 # Azure OpenAI connection details
 azure_openai_key = "22ec84421ec24230a3638d1b51e3a7dc" 
@@ -39,14 +43,14 @@ def main():
             new_audio_path = synthesize_speech(corrected_transcription)
             
             # Extract original audio duration
-            original_audio_duration = get_audio_duration(audio_path)
+            original_audio_duration = get_audio_duration(video_path)
 
-            # Adjust AI-generated audio to match original audio duration
-            adjusted_audio_path = adjust_audio_duration_to_match(original_audio_duration, new_audio_path)
+            # Extract original video duration
+            original_video_duration = get_audio_duration(video_path)
 
             # Replace audio in video
             st.write("Replacing and syncing audio in video...")   
-            final_video_path = replace_audio_in_video(video_path, new_audio_path)
+            final_video_path = replace_audio_in_video(video_path, new_audio_path, original_video_duration)
 
             st.write("Here is your final video:")
             st.video(final_video_path)
@@ -58,12 +62,24 @@ def save_uploaded_file(uploaded_file):
         f.write(uploaded_file.read())
     return video_path
 
-# Extract audio from video using FFmpeg and convert to mono
+# Extract audio from video using moviepy and convert to mono
 def extract_audio_from_video(video_file):
-    output_audio = "audio_mono.wav"  # Output audio file name
-    subprocess.run(["ffmpeg", "-i", video_file, "-ac", "1", output_audio])  # -ac 1 forces the audio to be mono
-    return output_audio
-
+    video = VideoFileClip(video_file)
+    audio = video.audio
+    output_audio = "audio_stereo.wav"
+    audio.write_audiofile(output_audio, fps=16000, codec="pcm_s16le")  # Save as stereo WAV first
+    
+    # Now convert stereo to mono using soundfile
+    data, samplerate = sf.read(output_audio)
+    
+    # If stereo (2 channels), convert to mono by averaging the channels
+    if len(data.shape) > 1 and data.shape[1] == 2:
+        data = np.mean(data, axis=1)
+    
+    output_audio_mono = "audio_mono.wav"
+    sf.write(output_audio_mono, data, samplerate)
+    
+    return output_audio_mono
 
 # Transcribe audio using Google Speech-to-Text API
 def transcribe_audio(audio_path):
@@ -98,43 +114,27 @@ def synthesize_speech(text):
         out.write(response.audio_content)
     return output_audio
 
-# Get audio duration using FFmpeg
-def get_audio_duration(audio_file):
-    result = subprocess.run(
-        ["ffmpeg", "-i", audio_file, "-hide_banner"], stderr=subprocess.PIPE, text=True
-    )
-    for line in result.stderr.splitlines():
-        if "Duration" in line:
-            duration_str = line.split(",")[0].split("Duration:")[1].strip()
-            h, m, s = duration_str.split(":")
-            return int(h) * 3600 + int(m) * 60 + float(s)
-    return None
+# Get video duration using moviepy
+def get_video_duration(video_file):
+    video = VideoFileClip(video_file)
+    return video.duration
 
+# Get video duration using moviepy
+def get_audio_duration(video_file):
+    video = VideoFileClip(video_file)
+    return video.duration
 
-# Adjust AI-generated audio duration to match the original audio
-def adjust_audio_duration_to_match(original_audio_duration, ai_audio_file):
-    adjusted_audio_file = "adjusted_audio.wav"
-    
-    # Use FFmpeg to stretch/compress the AI-generated audio to match the original audio duration
-    subprocess.run([
-        "ffmpeg", "-i", ai_audio_file, 
-        "-filter:a", f"aresample=async=1:min_hard_comp=0.100000:first_pts=0", 
-        "-to", str(original_audio_duration), adjusted_audio_file
-    ])
-    return adjusted_audio_file
+# Replace audio in video using moviepy
+def replace_audio_in_video(video_path, new_audio_path, original_video_duration):
+    video_clip = VideoFileClip(video_path)
+    new_audio_clip = AudioFileClip(new_audio_path)  # Use AudioFileClip for audio files
 
-# Replace audio in video using FFmpeg
-def replace_audio_in_video(video_path, new_audio_path):
+    # Sync audio duration to the original video length
+    new_audio_clip = new_audio_clip.subclip(0, min(original_video_duration, new_audio_clip.duration))
+
+    final_video = video_clip.set_audio(new_audio_clip)
     final_video_path = "final_video_with_synced_audio.mp4"
-    
-    # Ensure that the new audio is exactly in sync with the video using FFmpeg
-    subprocess.run([
-        "ffmpeg", "-i", video_path, "-i", new_audio_path, 
-        "-c:v", "copy", "-c:a", "aac", "-strict", "experimental", 
-        "-map", "0:v:0", "-map", "1:a:0", 
-        "-shortest", final_video_path
-    ])
-    
+    final_video.write_videofile(final_video_path, codec="libx264", audio_codec="aac")
     return final_video_path
 
 if __name__ == "__main__":
